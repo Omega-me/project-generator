@@ -21,5 +21,20 @@ namespace Project_generator
         {
 
         }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void reactPage_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mediatorGroup_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

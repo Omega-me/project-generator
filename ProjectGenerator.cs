@@ -312,8 +312,8 @@ namespace Project_generator
                 switch (projectType)
                 {
                     case "REACT":
-                        writer.WriteLine($"cd {path} \n "
-                        + $"npx create-react-app {path} --template omegame");
+                        writer.WriteLine($"cd {path} \n " +
+                            $"npx create-react-app {name} --template omegame");
                         break;
                     case "REACTMICRO":
                         writer.WriteLine($"cd {path} \n "

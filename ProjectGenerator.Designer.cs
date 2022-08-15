@@ -425,9 +425,12 @@
             // 
             // terminalField
             // 
+            this.terminalField.BackColor = System.Drawing.SystemColors.Desktop;
+            this.terminalField.ForeColor = System.Drawing.SystemColors.Window;
             this.terminalField.Location = new System.Drawing.Point(12, 12);
             this.terminalField.Multiline = true;
             this.terminalField.Name = "terminalField";
+            this.terminalField.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.terminalField.Size = new System.Drawing.Size(1037, 494);
             this.terminalField.TabIndex = 1;
             // 
