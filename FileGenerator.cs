@@ -16,5 +16,10 @@ namespace Project_generator
         {
             InitializeComponent();
         }
+
+        private void FileGenerator_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
