@@ -55,27 +55,23 @@ namespace Project_generator
                 MessageBox.Show("Please choose a project architecture", "Invalid project type");
                 return;
             }
-            Process cmd = new Process();
-            cmd.StartInfo.FileName = "cmd.exe";
-            cmd.StartInfo.RedirectStandardInput = true;
-            cmd.StartInfo.RedirectStandardOutput = true;
-            cmd.StartInfo.CreateNoWindow = true;
-            cmd.StartInfo.UseShellExecute = false;
-            cmd.Start();
-
-            cmd.StandardInput.WriteLine($"cd {pathField.Text}");
-            showLogsRadio.Checked = true;
-            cmd.StandardInput.WriteLine($"npx create-react-app {nameField.Text} --template omegame");
-            if (nameField.Text != ".")
+            List<string> commands = new List<string>
             {
-                cmd.StandardInput.WriteLine($"cd {nameField.Text}");
+                $"cd {pathField.Text}",
+                $"{nameField.Text}",
+                $"cd {nameField.Text}",
+                "code .",
+            };
+            if (baseArchitectureRadio.Checked)
+            {
+                Generate("REACT", pathField.Text,nameField.Text, commands);
+                return;
             }
-            cmd.StandardInput.WriteLine($"code .");
-            cmd.StandardInput.Flush();
-            cmd.StandardInput.Close();
-            cmd.WaitForExit();
-            terminalField.Text= cmd.StandardOutput.ReadToEnd();
-            resetBtn_Click(sender,e);
+            if (reactMicroFrontendArchitectureRadio.Checked)
+            {
+                Generate("REACTMICRO", pathField.Text, nameField.Text, commands);
+                return;
+            }
         }
         #endregion
 
@@ -114,26 +110,23 @@ namespace Project_generator
                 MessageBox.Show("Please choose a project architecture", "Invalid project type");
                 return;
             }
-            Process cmd = new Process();
-            cmd.StartInfo.FileName = "cmd.exe";
-            cmd.StartInfo.RedirectStandardInput = true;
-            cmd.StartInfo.RedirectStandardOutput = true;
-            cmd.StartInfo.CreateNoWindow = true;
-            cmd.StartInfo.UseShellExecute = false;
-            cmd.Start();
-
-            cmd.StandardInput.WriteLine($"cd {nextPathField.Text}");
-            //cmd.StandardInput.WriteLine($"npx create-react-app {nextNameField.Text} --template omegame");
-            if(nextPathField.Text != ".")
-            //{
-                //cmd.StandardInput.WriteLine($"cd {nextNameField.Text}");
-            //}
-            cmd.StandardInput.WriteLine($"code .");
-            cmd.StandardInput.Flush();
-            cmd.StandardInput.Close();
-            cmd.WaitForExit();
-            terminalField.Text = cmd.StandardOutput.ReadToEnd();
-            showLogsRadio.Checked = true;
+            List<string> commands = new List<string>
+            {
+                $"cd {nextPathField.Text}",
+                $"{nextNameField.Text}",
+                $"cd {nextNameField.Text}",
+                "code .",
+            };
+            if (nextBaseArchitectureRadio.Checked)
+            {
+                Generate("NEXT",nextPathField.Text,nextNameField.Text, commands);
+                return;
+            }
+            if (nextMicroFrontendArchitectureRadio.Checked)
+            {
+                Generate("NEXTMICRO", nextPathField.Text, nextNameField.Text,commands);
+                return;
+            }
         }
 
         #endregion
@@ -176,20 +169,33 @@ namespace Project_generator
                 MessageBox.Show("Please choose a project Database type", "Invalid project database type");
                 return;
             }
-            Process cmd = new Process();
-            cmd.StartInfo.FileName = "cmd.exe";
-            cmd.StartInfo.RedirectStandardInput = true;
-            cmd.StartInfo.RedirectStandardOutput = true;
-            cmd.StartInfo.CreateNoWindow = true;
-            cmd.StartInfo.UseShellExecute = false;
-            cmd.Start();
-
-            cmd.StandardInput.WriteLine($"cd {nodejsPathField.Text}");
-            cmd.StandardInput.Flush();
-            cmd.StandardInput.Close();
-            cmd.WaitForExit();
-            terminalField.Text = cmd.StandardOutput.ReadToEnd();
-            showLogsRadio.Checked = true;
+            List<string> commands = new List<string>
+            {
+                $"cd {nodejsPathField.Text}",
+                $"{nodejsNameField.Text}",
+                $"cd {nodejsNameField.Text}",
+                "code .",
+            };
+            if (nodejsTypescriptCheck.Checked && nodejsSqlRadio.Checked)
+            {
+                Generate("NODETSQL",nodejsPathField.Text,nodejsNameField.Text, commands);
+                return;
+            }
+            if (nodejsTypescriptCheck.Checked && nodejsNoSqlRadio.Checked)
+            {
+                Generate("NODETNOSQL", nodejsPathField.Text, nodejsNameField.Text, commands);
+                return;
+            }
+            if (!nodejsTypescriptCheck.Checked && nodejsSqlRadio.Checked)
+            {
+                Generate("NODESQL", nodejsPathField.Text, nodejsNameField.Text, commands);
+                return;
+            }
+            if (!nodejsTypescriptCheck.Checked && nodejsNoSqlRadio.Checked)
+            {
+                Generate("NODENOSQL", nodejsPathField.Text, nodejsNameField.Text, commands);
+                return;
+            }
         }
         #endregion
 
@@ -230,20 +236,23 @@ namespace Project_generator
                 MessageBox.Show("Please choose a project architecture", "Invalid project type");
                 return;
             }
-            Process cmd = new Process();
-            cmd.StartInfo.FileName = "cmd.exe";
-            cmd.StartInfo.RedirectStandardInput = true;
-            cmd.StartInfo.RedirectStandardOutput = true;
-            cmd.StartInfo.CreateNoWindow = true;
-            cmd.StartInfo.UseShellExecute = false;
-            cmd.Start();
-
-            cmd.StandardInput.WriteLine($"cd {dotnetPathField.Text}");
-            cmd.StandardInput.Flush();
-            cmd.StandardInput.Close();
-            cmd.WaitForExit();
-            terminalField.Text = cmd.StandardOutput.ReadToEnd();
-            showLogsRadio.Checked = true;
+            List<string> commands = new List<string>
+            {
+                $"cd {dotnetPathField.Text}",
+                $"{dotnetNameField.Text}",
+                $"cd {dotnetNameField.Text}",
+                "code .",
+            };
+            if (cqerRepoRadio.Checked)
+            {
+                Generate("DOTNETREPO",dotnetPathField.Text,dotnetNameField.Text, commands);
+                return;
+            }
+            if (cqrsMediatrRadio.Checked)
+            {
+                Generate("DOTNETMEDIATOR", dotnetPathField.Text, dotnetNameField.Text, commands);
+                return;
+            }
         }
         #endregion
 
@@ -266,7 +275,6 @@ namespace Project_generator
             nodejsGeneratorGroup.Hide();
             dotnetGeneratorGroup.Hide();
         }
-
         private void clearLogsBtn_Click(object sender, EventArgs e)
         {
             terminalField.Text = null;
@@ -275,6 +283,99 @@ namespace Project_generator
         {
            var fileGenerator =new FileGenerator();
             fileGenerator.Show();
+        }
+        private void Generate(string projectType,string path,string name, List<string> commands)
+        {
+            string pathString;
+            string folderDir = @"" + path;
+            string fileName = name;
+            pathString = Path.Combine(folderDir, fileName);
+            pathString = Path.ChangeExtension(pathString, "bat");
+
+            if (!File.Exists(pathString))
+            {
+                using (System.IO.FileStream fs = File.Create(pathString))
+                {
+                    terminalField.Text = pathString;
+                }
+            }
+            else
+            {
+                File.Delete(@"" + pathString);
+                using (System.IO.FileStream fs = File.Create(pathString))
+                {
+                    terminalField.Text = pathString;
+                }
+            }
+            using (StreamWriter writer = new StreamWriter(pathString))
+            {
+                switch (projectType)
+                {
+                    case "REACT":
+                        writer.WriteLine($"cd {path} \n "
+                        + $"npx create-react-app {path} --template omegame");
+                        break;
+                    case "REACTMICRO":
+                        writer.WriteLine($"cd {path} \n "
+                        + "REACTMICRO");
+                        break;
+                    case "NEXT":
+                        writer.WriteLine($"cd {path} \n "
+                        + "NEXT");
+                        break;
+                    case "NEXTMICRO":
+                        writer.WriteLine($"cd {path} \n "
+                        + "NEXTMICRO");
+                        break;
+                    case "NODETSQL":
+                        writer.WriteLine($"cd {path} \n "
+                        + "NODETSQL");
+                        break;
+                    case "NODETNOSQL":
+                        writer.WriteLine($"cd {path} \n "
+                        + "NODETNOSQL");
+                        break;
+                    case "NODESQL":
+                        writer.WriteLine($"cd {path} \n "
+                        + "NODESQL");
+                        break;
+                    case "NODENOSQL":
+                        writer.WriteLine($"cd {path} \n "
+                        + "NODENOSQL");
+                        break;
+                    case "DOTNETREPO":
+                        writer.WriteLine($"cd {path} \n "
+                        + "DOTNETREPO");
+                        break;
+                    case "DOTNETMEDIATOR":
+                        writer.WriteLine($"cd {path} \n "
+                        + "DOTNETMEDIATOR");
+                        break;
+                }
+
+            }
+            Process cmd = new Process();
+            cmd.StartInfo.FileName = "cmd.exe";
+            cmd.StartInfo.RedirectStandardInput = true;
+            cmd.StartInfo.RedirectStandardOutput = true;
+            cmd.StartInfo.CreateNoWindow = false;
+            cmd.StartInfo.UseShellExecute = false;
+            cmd.Start();
+
+            foreach (var command in commands)
+            {
+                cmd.StandardInput.WriteLine(command);
+            }
+
+            cmd.StandardInput.Flush();
+            cmd.StandardInput.Close();
+            cmd.WaitForExit();
+            terminalField.Text = cmd.StandardOutput.ReadToEnd();
+            showLogsRadio.Checked = true;
+            if (File.Exists(pathString))
+            {
+                File.Delete(@"" + pathString);
+            }
         }
         #endregion
     }
