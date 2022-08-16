@@ -296,10 +296,6 @@
             this.logsField.Size = new System.Drawing.Size(1027, 533);
             this.logsField.TabIndex = 0;
             // 
-            // selectSlnPathDialog
-            // 
-            this.selectSlnPathDialog.FileName = "Select sln file Dialog";
-            // 
             // FileGenerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
