@@ -39,6 +39,7 @@
             this.dotnetPage = new System.Windows.Forms.TabPage();
             this.mediatorGroup = new System.Windows.Forms.GroupBox();
             this.repositoryGroup = new System.Windows.Forms.GroupBox();
+            this.dotnetRepoShowInstructionCheckbox = new System.Windows.Forms.CheckBox();
             this.dotnetResponseCheckbox = new System.Windows.Forms.CheckBox();
             this.repoDomainNameField = new System.Windows.Forms.TextBox();
             this.repoEntityField = new System.Windows.Forms.Label();
@@ -49,7 +50,7 @@
             this.dotnetRepoSolutionPathLabel = new System.Windows.Forms.Label();
             this.logsPage = new System.Windows.Forms.TabPage();
             this.logsField = new System.Windows.Forms.TextBox();
-            this.dotnetRepoShowInstructionCheckbox = new System.Windows.Forms.CheckBox();
+            this.selectSlnPathDialog = new System.Windows.Forms.OpenFileDialog();
             this.fileGenContainer.SuspendLayout();
             this.frontendPage.SuspendLayout();
             this.frontendContainer.SuspendLayout();
@@ -81,7 +82,6 @@
             this.frontendPage.TabIndex = 0;
             this.frontendPage.Text = "Front-End";
             this.frontendPage.UseVisualStyleBackColor = true;
-            this.frontendPage.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // frontendContainer
             // 
@@ -140,7 +140,7 @@
             this.nodejsPage.Location = new System.Drawing.Point(4, 29);
             this.nodejsPage.Name = "nodejsPage";
             this.nodejsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.nodejsPage.Size = new System.Drawing.Size(1019, 503);
+            this.nodejsPage.Size = new System.Drawing.Size(1019, 450);
             this.nodejsPage.TabIndex = 0;
             this.nodejsPage.Text = "Node js";
             this.nodejsPage.UseVisualStyleBackColor = true;
@@ -165,7 +165,6 @@
             this.mediatorGroup.TabIndex = 1;
             this.mediatorGroup.TabStop = false;
             this.mediatorGroup.Text = "Mediator architecture file generator";
-            this.mediatorGroup.Enter += new System.EventHandler(this.mediatorGroup_Enter);
             // 
             // repositoryGroup
             // 
@@ -185,9 +184,23 @@
             this.repositoryGroup.TabStop = false;
             this.repositoryGroup.Text = "Repository architecture file generator";
             // 
+            // dotnetRepoShowInstructionCheckbox
+            // 
+            this.dotnetRepoShowInstructionCheckbox.AutoSize = true;
+            this.dotnetRepoShowInstructionCheckbox.Checked = true;
+            this.dotnetRepoShowInstructionCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.dotnetRepoShowInstructionCheckbox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.dotnetRepoShowInstructionCheckbox.Location = new System.Drawing.Point(15, 358);
+            this.dotnetRepoShowInstructionCheckbox.Name = "dotnetRepoShowInstructionCheckbox";
+            this.dotnetRepoShowInstructionCheckbox.Size = new System.Drawing.Size(251, 24);
+            this.dotnetRepoShowInstructionCheckbox.TabIndex = 8;
+            this.dotnetRepoShowInstructionCheckbox.Text = "Show instruction after generation";
+            this.dotnetRepoShowInstructionCheckbox.UseVisualStyleBackColor = true;
+            // 
             // dotnetResponseCheckbox
             // 
             this.dotnetResponseCheckbox.AutoSize = true;
+            this.dotnetResponseCheckbox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dotnetResponseCheckbox.Location = new System.Drawing.Point(15, 202);
             this.dotnetResponseCheckbox.Name = "dotnetResponseCheckbox";
             this.dotnetResponseCheckbox.Size = new System.Drawing.Size(277, 24);
@@ -213,30 +226,36 @@
             // 
             // dotnetGenerateRepoBtn
             // 
+            this.dotnetGenerateRepoBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dotnetGenerateRepoBtn.Location = new System.Drawing.Point(330, 358);
             this.dotnetGenerateRepoBtn.Name = "dotnetGenerateRepoBtn";
             this.dotnetGenerateRepoBtn.Size = new System.Drawing.Size(122, 29);
             this.dotnetGenerateRepoBtn.TabIndex = 4;
             this.dotnetGenerateRepoBtn.Text = "Generate files";
             this.dotnetGenerateRepoBtn.UseVisualStyleBackColor = true;
+            this.dotnetGenerateRepoBtn.Click += new System.EventHandler(this.dotnetGenerateRepoBtn_Click);
             // 
             // dotnetRepoResetBtn
             // 
+            this.dotnetRepoResetBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dotnetRepoResetBtn.Location = new System.Drawing.Point(330, 323);
             this.dotnetRepoResetBtn.Name = "dotnetRepoResetBtn";
             this.dotnetRepoResetBtn.Size = new System.Drawing.Size(122, 29);
             this.dotnetRepoResetBtn.TabIndex = 3;
             this.dotnetRepoResetBtn.Text = "Reset";
             this.dotnetRepoResetBtn.UseVisualStyleBackColor = true;
+            this.dotnetRepoResetBtn.Click += new System.EventHandler(this.dotnetRepoResetBtn_Click);
             // 
             // dotnetRepoSolutionSetPathBtn
             // 
+            this.dotnetRepoSolutionSetPathBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dotnetRepoSolutionSetPathBtn.Location = new System.Drawing.Point(374, 62);
             this.dotnetRepoSolutionSetPathBtn.Name = "dotnetRepoSolutionSetPathBtn";
             this.dotnetRepoSolutionSetPathBtn.Size = new System.Drawing.Size(78, 29);
             this.dotnetRepoSolutionSetPathBtn.TabIndex = 2;
             this.dotnetRepoSolutionSetPathBtn.Text = "Set path";
             this.dotnetRepoSolutionSetPathBtn.UseVisualStyleBackColor = true;
+            this.dotnetRepoSolutionSetPathBtn.Click += new System.EventHandler(this.dotnetRepoSolutionSetPathBtn_Click);
             // 
             // dotnetRepoSolutionPathField
             // 
@@ -261,7 +280,7 @@
             this.logsPage.Location = new System.Drawing.Point(4, 29);
             this.logsPage.Name = "logsPage";
             this.logsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.logsPage.Size = new System.Drawing.Size(1039, 545);
+            this.logsPage.Size = new System.Drawing.Size(1039, 492);
             this.logsPage.TabIndex = 2;
             this.logsPage.Text = "Logs";
             this.logsPage.UseVisualStyleBackColor = true;
@@ -277,17 +296,9 @@
             this.logsField.Size = new System.Drawing.Size(1027, 533);
             this.logsField.TabIndex = 0;
             // 
-            // dotnetRepoShowInstructionCheckbox
+            // selectSlnPathDialog
             // 
-            this.dotnetRepoShowInstructionCheckbox.AutoSize = true;
-            this.dotnetRepoShowInstructionCheckbox.Checked = true;
-            this.dotnetRepoShowInstructionCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.dotnetRepoShowInstructionCheckbox.Location = new System.Drawing.Point(15, 358);
-            this.dotnetRepoShowInstructionCheckbox.Name = "dotnetRepoShowInstructionCheckbox";
-            this.dotnetRepoShowInstructionCheckbox.Size = new System.Drawing.Size(251, 24);
-            this.dotnetRepoShowInstructionCheckbox.TabIndex = 8;
-            this.dotnetRepoShowInstructionCheckbox.Text = "Show instruction after generation";
-            this.dotnetRepoShowInstructionCheckbox.UseVisualStyleBackColor = true;
+            this.selectSlnPathDialog.FileName = "Select sln file Dialog";
             // 
             // FileGenerator
             // 
@@ -337,5 +348,6 @@
         private TabPage logsPage;
         private TextBox logsField;
         private CheckBox dotnetRepoShowInstructionCheckbox;
+        private OpenFileDialog selectSlnPathDialog;
     }
 }
