@@ -35,7 +35,6 @@ namespace Project_generator
             {
                 dotnetRepoSolutionPathField.Text=selectSlnPathDialog.FileName;
                 folderName=new DirectoryInfo(Path.GetDirectoryName(selectSlnPathDialog.FileName)).FullName;
-                dotnetRepoSolutionPathField.Enabled = true;
 
             }
         }
