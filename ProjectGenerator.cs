@@ -294,7 +294,7 @@ namespace Project_generator
 
             if (!File.Exists(pathString))
             {
-                using (System.IO.FileStream fs = File.Create(pathString))
+                using (FileStream fs = File.Create(pathString))
                 {
                     terminalField.Text = pathString;
                 }
@@ -302,7 +302,7 @@ namespace Project_generator
             else
             {
                 File.Delete(@"" + pathString);
-                using (System.IO.FileStream fs = File.Create(pathString))
+                using (FileStream fs = File.Create(pathString))
                 {
                     terminalField.Text = pathString;
                 }

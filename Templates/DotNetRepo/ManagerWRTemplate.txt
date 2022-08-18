@@ -1,0 +1,189 @@
+﻿using AutoMapper;
+using Hotel_listing.Application.Configurations.Response;
+using Hotel_listing.Application.Contracts.RepositoryManager.Command;
+using Hotel_listing.Application.Contracts.RepositoryManager.Query;
+using Hotel_listing.Domain.Entitites;
+using Microsoft.AspNetCore.JsonPatch;
+
+namespace {{namespacetext}};
+public {{classtype}} {{classname}} {{inherits}}
+{
+    #region Managers and response builders
+    public static async Task<{{entity}}Response> GetAll(IQuery query)
+    {
+        IList<{{entity}}> data =await query.{{entity}}.GetAll();
+        return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+        {
+            r.Results = data;
+            r.StatusCode = StatusCodes.Status200OK;
+            r.Success = true;
+            r.Count = data.Count;
+        });
+    }
+    public static async Task<{{entity}}Response> GetOne(int id, IQuery query)
+    {
+        {{entity}} data = await query.{{entity}}.Get(c => c.Id == id);
+        if (data == null)
+        {
+            return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+            {
+                r.Success = false;
+                r.StatusCode = StatusCodes.Status404NotFound;
+                r.Errors = new List<BaseError>
+                {   
+                    new BaseError()
+                    {
+                        ErrorMessage = "The {{entity}} you are looking for does not exists."
+                    }
+                };
+            });
+            
+        }
+        
+        return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+        {
+            r.Results = data;
+            r.Success = true;
+            r.StatusCode = StatusCodes.Status200OK;
+            r.Count = 1;
+        });
+    }
+    public static async Task<{{entity}}Response> Create({{entity}} data,ICommands command,IMapper mapper)
+    {
+        {{entity}} {{entity}}Data = mapper.Map<{{entity}}>(data);
+        await command.{{entity}}.Insert({{entity}}Data);
+        await command.Save();
+        return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+        {
+            r.Results = data;
+            r.StatusCode = StatusCodes.Status201Created;
+        });
+    }
+    public static async Task<{{entity}}Response> Delete(int id,IQuery query,ICommands command)
+    {
+        {{entity}} data = await query.{{entity}}.Get(c => c.Id == id);
+        if (data == null)
+        {
+            return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+            {
+                r.StatusCode = StatusCodes.Status404NotFound;
+                r.Success = false;
+                r.Errors = new List<BaseError>
+                {   
+                    new BaseError()
+                    {
+                        ErrorMessage = "The {{entity}} you are looking for does not exists."
+                    }
+                };
+            });
+        }
+        await command.{{entity}}.Delete(id);
+        await command.Save();
+        return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+        {
+            r.StatusCode = StatusCodes.Status204NoContent;
+        });
+    }
+    //TODO
+    public static async Task<{{entity}}Response> DeleteRange(List<int> ids,IQuery query, ICommands command)
+    {
+        IEnumerable<{{entity}}> data = Array.Empty<{{entity}}>();
+        foreach (var id in ids)
+        {
+            data.ToList().Add(await query.{{entity}}.Get(c=>c.Id==id));
+        }
+        if (data.ToList().Count == 0)
+        {
+            return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+            {
+                r.StatusCode = StatusCodes.Status404NotFound;
+                r.Success = false;
+                r.Errors = new List<BaseError>
+                {   
+                    new BaseError()
+                    {
+                        ErrorMessage = "The {{entity}} you are looking for does not exists."
+                    }
+                };
+            });
+        }
+        command.{{entity}}.DeleteRange(data);
+        await command.Save();
+        return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+        {
+            r.StatusCode = StatusCodes.Status204NoContent;
+        });
+    }
+    public static async Task<{{entity}}Response> Update(int id, {{entity}} data, IQuery query, ICommands command, IMapper mapper)
+    {
+        if (id != data.Id)
+        {
+            return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+            {
+                r.StatusCode = StatusCodes.Status400BadRequest;
+                r.Success = false;
+                r.Errors = new List<BaseError>
+                {   
+                    new BaseError()
+                    {
+                        ErrorMessage = "The {{entity}} you are looking for does not exists."
+                    }
+                };
+            });
+        }
+        {{entity}} {{entity}}Data = await query.{{entity}}.Get(c => c.Id == id);
+        if ({{entity}}Data == null)
+        {
+            return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+            {
+                r.StatusCode = StatusCodes.Status404NotFound;
+                r.Success = false;
+                r.Errors = new List<BaseError>
+                {   
+                    new BaseError()
+                    {
+                        ErrorMessage = "The {{entity}} you are looking for does not exists."
+                    }
+                };
+            });
+        }
+        mapper.Map(data, {{entity}}Data);
+        command.{{entity}}.Update({{entity}}Data);
+        await command.Save();
+        return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+        {
+            r.Results = {{entity}}Data;
+            r.StatusCode = StatusCodes.Status200OK;
+            r.Success = true;
+        });
+    }
+    public static async Task<{{entity}}Response> UpdatePartial(int id, JsonPatchDocument data, IQuery query, ICommands command,IMapper mapper)
+    {
+        var test = data.Operations;
+        {{entity}} {{entity}}Data = await query.{{entity}}.Get(c => c.Id == id);
+        if ({{entity}}Data == null)
+        {
+            return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+            {
+                r.StatusCode = StatusCodes.Status404NotFound;
+                r.Success = false;
+                r.Errors = new List<BaseError>
+                {   
+                    new BaseError()
+                    {
+                        ErrorMessage = "The {{entity}} you are looking for does not exists."
+                    }
+                };
+            });
+        }
+        command.{{entity}}.UpdatePartial({{entity}}Data,data);
+        await command.Save();
+        return new {{entity}}Response().BuildResult<{{entity}}Response>(r =>
+        {
+            r.Results = {{entity}}Data;
+            r.StatusCode = StatusCodes.Status200OK;
+            r.Success = true;
+        });
+    }
+    #endregion
+}

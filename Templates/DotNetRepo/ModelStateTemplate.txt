@@ -1,0 +1,35 @@
+﻿using Hotel_listing.Application.Configurations.Response;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+
+namespace {{namespacetext}};
+public {{classtype}} {{classname}}:ResultFilterAttribute
+{
+    public override void OnResultExecuting(ResultExecutingContext context)
+    {
+        if (!context.ModelState.IsValid)
+        {
+            var errors = context.ModelState.Values.Where(v => v.Errors.Count > 0)
+                .SelectMany(v => v.Errors)
+                .Select(v => new BaseError{ ErrorMessage = v.ErrorMessage})
+                .ToList();
+
+            var response = new {{entity}}Response()
+            {
+                Results = null,
+                Success = false,
+                Errors = errors,
+                StatusCode = StatusCodes.Status400BadRequest,
+                Count = 0
+                //Add other fields from {{entity}}Response here 
+            };
+            
+            context.Result = new JsonResult(response)
+            {
+                StatusCode = 400
+            };
+        }
+        base.OnResultExecuting(context);
+    }
+}

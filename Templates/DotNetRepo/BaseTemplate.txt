@@ -1,0 +1,4 @@
+﻿namespace {{namespacetext}};
+public {{classtype}} {{classname}} {{inherits}}
+{}
+
