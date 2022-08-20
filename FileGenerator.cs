@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Project_generator.Utils;
 using Scriban;
 
 namespace Project_generator
@@ -16,12 +17,6 @@ namespace Project_generator
         private string folderName;
         private string folderPath;
         private string templatePath;
-        private string dotnetRepoClassType;
-        private string dotnetRepoInherits;
-        private string dotnetRepoNamespace;
-        private string dotnetRepoClassName;
-        private string dotnetRepoTemplateText;
-        private string dotnetRepoEntityname;
 
         public FileGenerator()
         {
@@ -71,79 +66,55 @@ namespace Project_generator
                 MessageBox.Show("Please specify Entity name", "Inavlid entity name");
                 return;
             }
-
-            List<FileNames> files = new List<FileNames>
-            {
-                new FileNames{
-                    Name = repoDomainNameField.Text,
-                    Path = $"{folderPath}\\{folderName}.Domain\\Entitites",
-                },
-                new FileNames{
-                    Name = $"I{repoDomainNameField.Text}Query",
-                    Path = $"{folderPath}\\{folderName}.Application\\Contracts\\RepositoryManager\\Query",
-                },
-                new FileNames{
-                    Name = $"I{repoDomainNameField.Text}Command",
-                    Path = $"{folderPath}\\{folderName}.Application\\Contracts\\RepositoryManager\\Command",
-                },
-                new FileNames{
-                    Name = $"{repoDomainNameField.Text}Query",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\RepositoryManager\\Query",
-                },
-                new FileNames{
-                    Name = $"{repoDomainNameField.Text}Command",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\RepositoryManager\\Command",
-                },
-                new FileNames{
-                    Name = $"{repoDomainNameField.Text}Configuration",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\DatabaseManager\\Configurations\\Entities",
-                },
-                new FileNames{
-                    Name = $"{repoDomainNameField.Text}Manager",
-                    Path = $"{folderPath}\\{folderName}.Presantation\\Managers",
-                },
-                new FileNames{
-                    Name = $"{repoDomainNameField.Text}Controller",
-                    Path = $"{folderPath}\\{folderName}.Presantation\\Controllers",
-                },
-            };
-            if (dotnetResponseCheckbox.Checked)
-            {
-                files.Add(
-                    new FileNames
-                    {
-                        Name = $"{repoDomainNameField.Text}ModelStateFilter",
-                        Path = $"{folderPath}\\{folderName}.Application\\Exceptions\\ValidationResponseFilters",
-                    }
-                );
-                files.Add(
-                    new FileNames
-                    {
-                        Name = $"I{repoDomainNameField.Text}Response",
-                        Path = $"{folderPath}\\{folderName}.Application\\Contracts\\Response",
-                    }
-                );
-                files.Add(
-                     new FileNames
-                     {
-                         Name = $"{repoDomainNameField.Text}Response",
-                         Path = $"{folderPath}\\{folderName}.Application\\Configurations\\Response",
-                     }
-                );
-            }
-
+            List<FileNames> files = DotnetRepo.RepoTemplateConfig(
+                folderPath,
+                folderName,
+                repoDomainNameField.Text,
+                dotnetResponseCheckbox.Checked);
 
             foreach (FileNames file in files)
             {
-                var templateText = ConfigureRepoGeneratedFiles(file);
+                var templateText="";
+
+                if (file.Name == $"{repoDomainNameField.Text}Controller")
+                {
+                    templateText = File.ReadAllText($"{templatePath}/DotNetRepo/Controller.txt");
+                }
+                else if(file.Name == $"{repoDomainNameField.Text}Manager")
+                {
+                    templateText = File.ReadAllText($"{templatePath}/DotNetRepo/Manager.txt");
+                }
+                else if (file.Name == $"{repoDomainNameField.Text}ModelStateFilter")
+                {
+                    templateText = File.ReadAllText($"{templatePath}/DotNetRepo/ModelState.txt");
+                }
+                else if (file.Name == "IQuery" || file.Name == "ICommands"|| file.Name == "Query" || file.Name == "Commands")
+                {
+                    templateText = File.ReadAllText($"{templatePath}/DotNetRepo/cqrs.txt");
+                }
+                else if (file.Name == "DatabaseContext")
+                {
+                    templateText = File.ReadAllText($"{templatePath}/DotNetRepo/DbContext.txt");
+                }
+                else
+                {
+                    templateText= File.ReadAllText($"{templatePath}/DotNetRepo/Template.txt");
+                }
+
                 var template = Template.Parse(templateText);
-                var result = template.Render(new {
-                    classtype = dotnetRepoClassType,
-                    namespacetext = $"{folderName}.{dotnetRepoNamespace}",
-                    inherits = dotnetRepoInherits,
-                    classname = dotnetRepoClassName,
-                    entity= dotnetRepoEntityname,
-                    response= dotnetResponseCheckbox.Checked
+                var result = template.Render(new
+                {
+                    name=file.Name,
+                    usings=file.Usings,
+                    namespacetext=file.Namespace,
+                    isstatic=file.IsStatic,
+                    type=file.Type,
+                    inherits=file.Inherits,
+                    constructor=file.Constructor,
+                    entity= repoDomainNameField.Text,
+                    entitylowercase = repoDomainNameField.Text.ToLower(),
+                    customresponse = dotnetResponseCheckbox.Checked,
+                    folder = folderName
                 });
 
                 string pathString;
@@ -159,7 +130,7 @@ namespace Project_generator
                     {
                         logsField.Text = logsField.Text + pathString + "                     ";
                     }
-                    WriteToFiles(pathString, result.ToString());
+                   DotnetRepo.WriteToFiles(pathString, result.ToString());
                 }
                 else
                 {
@@ -168,147 +139,13 @@ namespace Project_generator
                     {
                         logsField.Text = logsField.Text + pathString + "                    ";
                     }
-                    WriteToFiles(pathString, result.ToString());
-
+                    DotnetRepo.WriteToFiles(pathString, result.ToString());
                 }
             }
             if (dotnetRepoShowInstructionCheckbox.Checked = true)
             {
                 MessageBox.Show("Please follow the instruction","Instructions");
             }
-        }
-        private void WriteToFiles(string path,string content)
-        {
-            using (StreamWriter writetext = new StreamWriter(path))
-            {
-                writetext.WriteLine(content);
-            }
-        }
-        private string ConfigureRepoGeneratedFiles(FileNames file)
-        {
-            if (file.Name == $"I{repoDomainNameField.Text}Query")
-            {
-                dotnetRepoNamespace = "Application.Contracts.RepositoryManager.Query";
-                dotnetRepoClassType = "interface";
-                dotnetRepoClassName = $"I{repoDomainNameField.Text}Query";
-                dotnetRepoInherits = $": IBaseQuery<{repoDomainNameField.Text}>";
-                dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/BaseTemplate.txt");
-
-                return dotnetRepoTemplateText;
-            }
-            if (file.Name == $"I{repoDomainNameField.Text}Command")
-            {
-                dotnetRepoNamespace = "Application.Contracts.RepositoryManager.Command";
-                dotnetRepoClassType = "interface";
-                dotnetRepoClassName = $"I{repoDomainNameField.Text}Command";
-                dotnetRepoInherits = $": IBaseCommand<{repoDomainNameField.Text}>";
-                dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/BaseTemplate.txt");
-                return dotnetRepoTemplateText;
-            }
-            if (file.Name == repoDomainNameField.Text)
-            {
-                dotnetRepoNamespace = "Domain.Entitites";
-                dotnetRepoClassType = "class";
-                dotnetRepoClassName=repoDomainNameField.Text;
-                dotnetRepoInherits = null;
-                dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/BaseTemplate.txt");
-                return dotnetRepoTemplateText;
-            }
-            if (file.Name == $"{repoDomainNameField.Text}Command")
-            {
-                dotnetRepoNamespace = "Infrastructure.RepositoryManager.Command";
-                dotnetRepoClassType = "class";
-                dotnetRepoClassName = $"{repoDomainNameField.Text}Command";
-                dotnetRepoInherits = $": BaseCommand<{repoDomainNameField.Text}>, I{repoDomainNameField.Text}Command";
-                dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/BaseTemplate.txt");
-                return dotnetRepoTemplateText;
-            }
-            if (file.Name == $"{repoDomainNameField.Text}Query")
-            {
-                dotnetRepoNamespace = "Infrastructure.RepositoryManager.Query";
-                dotnetRepoClassType = "class";
-                dotnetRepoClassName = $"{repoDomainNameField.Text}Query";
-                dotnetRepoInherits = $": BaseQuery<{repoDomainNameField.Text}>, I{repoDomainNameField.Text}Query";
-                dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/BaseTemplate.txt");
-                return dotnetRepoTemplateText;
-            }
-            if (file.Name == $"{repoDomainNameField.Text}Configuration")
-            {
-                dotnetRepoNamespace = "Infrastructure.DatabaseManager.Configurations.Entities";
-                dotnetRepoClassType = "class";
-                dotnetRepoClassName = $"{repoDomainNameField.Text}Configuration";
-                dotnetRepoInherits = $": IEntityTypeConfiguration<{repoDomainNameField.Text}>";
-                dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/BaseTemplate.txt");
-                return dotnetRepoTemplateText;
-            }
-            if (file.Name == $"{repoDomainNameField.Text}Manager")
-            {
-                dotnetRepoNamespace = "Presantation.Managers";
-                dotnetRepoClassType = " static class";
-                dotnetRepoClassName = $"{repoDomainNameField.Text}Manager";
-                dotnetRepoInherits = null;
-                dotnetRepoEntityname = repoDomainNameField.Text;
-                if (dotnetResponseCheckbox.Checked)
-                {
-                    dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/ManagerWRTemplate.txt");
-                }
-                if (!dotnetResponseCheckbox.Checked)
-                {
-                    dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/ManagerTemplate.txt");
-
-                }
-                return dotnetRepoTemplateText;
-            }
-            if (file.Name == $"{repoDomainNameField.Text}Controller")
-            {
-                dotnetRepoNamespace = "Presantation.Controllers";
-                dotnetRepoClassType = "class";
-                dotnetRepoClassName = $"{repoDomainNameField.Text}Controller";
-                dotnetRepoInherits = $": BaseController<{repoDomainNameField.Text}>";
-                dotnetRepoEntityname=repoDomainNameField.Text;
-                if (dotnetResponseCheckbox.Checked)
-                {
-                    dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/ControllerWRTemplate.txt");
-                }
-                if (!dotnetResponseCheckbox.Checked)
-                {
-                    dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/ControllerTemplate.txt");
-                }
-                return dotnetRepoTemplateText;
-            }
-
-            if (dotnetResponseCheckbox.Checked)
-            {
-                if(file.Name == $"I{repoDomainNameField.Text}Response")
-                {
-                    dotnetRepoNamespace = "Application.Contracts.Response";
-                    dotnetRepoClassType = "interface";
-                    dotnetRepoClassName = $"I{repoDomainNameField.Text}Response";
-                    dotnetRepoInherits = $": IBaseResponse<object,object>";
-                    dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/BaseTemplate.txt");
-                    return dotnetRepoTemplateText;
-                }
-                if (file.Name == $"{repoDomainNameField.Text}ModelStateFilter")
-                {
-                    dotnetRepoNamespace = "Application.Exceptions.ValidationResponseFilters";
-                    dotnetRepoClassType = "class";
-                    dotnetRepoClassName = $"{repoDomainNameField.Text}ModelStateFilter";
-                    dotnetRepoInherits = null;
-                    dotnetRepoEntityname = repoDomainNameField.Text;
-                    dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/ModelStateTemplate.txt");
-                    return dotnetRepoTemplateText;
-                }
-                if (file.Name == $"{repoDomainNameField.Text}Response")
-                {
-                    dotnetRepoNamespace = "Application.Configurations.Response";
-                    dotnetRepoClassType = "class";
-                    dotnetRepoClassName = $"{repoDomainNameField.Text}Response";
-                    dotnetRepoInherits = $": BaseResponse<object, object>, I{repoDomainNameField.Text}Response";
-                    dotnetRepoTemplateText = File.ReadAllText($"{templatePath}/DotNetRepo/BaseTemplate.txt");
-                    return dotnetRepoTemplateText;
-                }
-            }
-            return null;
         }
         #endregion
     }

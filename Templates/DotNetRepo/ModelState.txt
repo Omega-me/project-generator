@@ -1,10 +1,9 @@
-﻿using Hotel_listing.Application.Configurations.Response;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿{{~ for using in usings ~}}
+{{using}}
+{{~ end ~}}
 
-namespace {{namespacetext}};
-public {{classtype}} {{classname}}:ResultFilterAttribute
+namespace {{namespacetext}}
+public class {{name}} : ResultFilterAttribute
 {
     public override void OnResultExecuting(ResultExecutingContext context)
     {
@@ -17,12 +16,12 @@ public {{classtype}} {{classname}}:ResultFilterAttribute
 
             var response = new {{entity}}Response()
             {
+                //Add other response fields here 
                 Results = null,
                 Success = false,
                 Errors = errors,
                 StatusCode = StatusCodes.Status400BadRequest,
                 Count = 0
-                //Add other fields from {{entity}}Response here 
             };
             
             context.Result = new JsonResult(response)
