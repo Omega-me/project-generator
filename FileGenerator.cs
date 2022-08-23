@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Project_generator.Utils;
+﻿using Project_generator.Utils;
 using Scriban;
 
 namespace Project_generator
@@ -22,6 +13,7 @@ namespace Project_generator
         {
             InitializeComponent();
         }
+        // https://stackoverflow.com/questions/15653921/get-current-folder-path
 
         private void FileGenerator_Load(object sender, EventArgs e)
         {
