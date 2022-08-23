@@ -9,6 +9,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Templates\DotNetRepo\Controller.txt" />
+    <None Remove="Templates\DotNetRepo\cqrs.txt" />
+    <None Remove="Templates\DotNetRepo\DbContext.txt" />
+    <None Remove="Templates\DotNetRepo\Manager.txt" />
+    <None Remove="Templates\DotNetRepo\ModelState.txt" />
+    <None Remove="Templates\DotNetRepo\Template.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Templates\DotNetRepo\Controller.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\DotNetRepo\cqrs.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\DotNetRepo\DbContext.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\DotNetRepo\Manager.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\DotNetRepo\ModelState.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\DotNetRepo\Template.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Scriban" Version="5.5.0" />
   </ItemGroup>
 
