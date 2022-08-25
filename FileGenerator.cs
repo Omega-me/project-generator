@@ -1,5 +1,6 @@
 ﻿using Project_generator.Utils;
 using Scriban;
+using System.Reflection;
 
 namespace Project_generator
 {
@@ -22,7 +23,8 @@ namespace Project_generator
             selectSlnPathDialog.FilterIndex = 1;
             selectSlnPathDialog.Multiselect = false;
             // Get the templates path
-            templatePath = @"" + Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "\\Templates";
+            templatePath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName}\\Templates";
+            logsField.Text= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
 
         #region .NET
