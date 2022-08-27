@@ -1,6 +1,8 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using CliWrap;
+using CliWrap.Buffered;
 
 namespace Project_generator
 {
@@ -38,7 +40,7 @@ namespace Project_generator
             baseArchitectureRadio.Checked = false;
             reactMicroFrontendArchitectureRadio.Checked = false;
         }
-        private void generateReactProjectBtn_Click(object sender, EventArgs e)
+        private async void generateReactProjectBtn_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(pathField.Text))
             {
@@ -64,7 +66,16 @@ namespace Project_generator
             };
             if (baseArchitectureRadio.Checked)
             {
-                Generate("REACT", pathField.Text,nameField.Text, commands);
+                var loading = new Loading();
+                loading.Show();
+                    var result = await Cli.Wrap("npx")
+                    .WithArguments(new[] { "create-react-app", nameField.Text, "--template", "omegame" })
+                    .WithWorkingDirectory(pathField.Text)
+                    .ExecuteBufferedAsync();
+                await Cli.Wrap("powershell").WithArguments("code .").WithWorkingDirectory($@"{pathField.Text}\{nameField.Text}").ExecuteAsync();
+                terminalField.Text = result.StandardOutput;
+                showLogsRadio.Checked = true;
+                loading.Hide();
                 return;
             }
             if (reactMicroFrontendArchitectureRadio.Checked)
@@ -287,7 +298,7 @@ namespace Project_generator
         private void Generate(string projectType,string path,string name, List<string> commands)
         {
             string pathString;
-            string folderDir = @"" + path;
+            string folderDir = $@"{path}";
             string fileName = name;
             pathString = Path.Combine(folderDir, fileName);
             pathString = Path.ChangeExtension(pathString, "bat");
