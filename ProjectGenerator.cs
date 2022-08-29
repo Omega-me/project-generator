@@ -8,6 +8,7 @@ namespace Project_generator
 {
     public partial class projectGenerator : Form
     {
+        Loading loading = new Loading();
         public projectGenerator()   
         {
             InitializeComponent();
@@ -21,7 +22,11 @@ namespace Project_generator
             terminalField.Hide();
             clearLogsBtn.Hide();
         }
-
+        private void onFormClosed(object sender, FormClosedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+            
         #region React
         private void setPathBtn_Click(object sender, EventArgs e)
         { 
@@ -57,16 +62,13 @@ namespace Project_generator
                 MessageBox.Show("Please choose a project architecture", "Invalid project type");
                 return;
             }
-            List<string> commands = new List<string>
-            {
-                $"cd {pathField.Text}",
-                $"{nameField.Text}",
-                $"cd {nameField.Text}",
-                "code .",
-            };
             if (baseArchitectureRadio.Checked)
             {
-                var loading = new Loading();
+                if (Directory.Exists($@"{pathField.Text}\{nameField.Text}"))
+                {
+                    MessageBox.Show($@"This directory {pathField.Text}\{nameField.Text} exists, please use different name for your project or delete the directory first", "Directory conflict");
+                    return;
+                }
                 loading.Show();
                     var result = await Cli.Wrap("npx")
                     .WithArguments(new[] { "create-react-app", nameField.Text, "--template", "omegame" })
@@ -80,7 +82,20 @@ namespace Project_generator
             }
             if (reactMicroFrontendArchitectureRadio.Checked)
             {
-                Generate("REACTMICRO", pathField.Text, nameField.Text, commands);
+                if (Directory.Exists($@"{pathField.Text}\{nameField.Text}"))
+                {
+                    MessageBox.Show($@"This directory {pathField.Text}\{nameField.Text} exists, please use different name for your project or delete the directory first", "Directory conflict");
+                    return;
+                }
+                loading.Show();
+                var result = await Cli.Wrap("npx")
+                .WithArguments(new[] { "create-react-app", nameField.Text, "--template", "omegamemicro" })
+                .WithWorkingDirectory(pathField.Text)
+                .ExecuteBufferedAsync();
+                await Cli.Wrap("powershell").WithArguments("code .").WithWorkingDirectory($@"{pathField.Text}\{nameField.Text}").ExecuteAsync();
+                terminalField.Text = result.StandardOutput;
+                showLogsRadio.Checked = true;
+                loading.Hide();
                 return;
             }
         }
@@ -389,5 +404,7 @@ namespace Project_generator
             }
         }
         #endregion
+
+       
     }
 }

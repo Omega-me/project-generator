@@ -14,7 +14,6 @@ namespace Project_generator
         {
             InitializeComponent();
         }
-        // https://stackoverflow.com/questions/15653921/get-current-folder-path
 
         private void FileGenerator_Load(object sender, EventArgs e)
         {
@@ -25,6 +24,8 @@ namespace Project_generator
             // Get the templates path
             templatePath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName}\\Templates";
             logsField.Text= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            // https://stackoverflow.com/questions/15653921/get-current-folder-path
+            // Add a template for base mapper initilization for the entity 
         }
 
         #region .NET
@@ -68,7 +69,7 @@ namespace Project_generator
 
             foreach (FileNames file in files)
             {
-                var templateText="";
+                string templateText="";
 
                 if (file.Name == $"{repoDomainNameField.Text}Controller")
                 {
@@ -112,7 +113,7 @@ namespace Project_generator
                 });
 
                 string pathString;
-                string folderDir = @"" + file.Path;
+                string folderDir = $@"{file.Path}";
                 string fileName = file.Name;
                 pathString = Path.Combine(folderDir, fileName);
                 pathString = Path.ChangeExtension(pathString, "cs");
@@ -128,7 +129,7 @@ namespace Project_generator
                 }
                 else
                 {
-                    File.Delete(@"" + pathString);
+                    File.Delete($@"{pathString}");
                     using (FileStream fs = File.Create(pathString))
                     {
                         logsField.Text = logsField.Text + pathString + "                    ";
