@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CliWrap;
+using CliWrap.Buffered;
 
 namespace Project_generator.Utils
 {
@@ -166,6 +163,15 @@ namespace Project_generator.Utils
                     Namespace=$"{folderName}.Presantation.Controllers;",
                     Constructor=null
                 },
+                new FileNames{
+                    Name = "MapperConfig",
+                    Path = $"{folderPath}\\{folderName}.Application\\Configurations",
+                    Usings = GetEntities(folderPath,folderName),
+                    Type = null,
+                    Inherits = null,
+                    Namespace = $"{folderName}.Application.Configurations;",
+                    Constructor = null
+                },
             };
             if (dotnetResponseCheckbox)
             {
@@ -215,9 +221,70 @@ namespace Project_generator.Utils
             }
             return files;
         }
+        public static List<FileNames> RepoTemplateConfigRegenerate(string folderPath,string folderName)
+        {
+            List<FileNames> files = new List<FileNames>
+            {
+                new FileNames{
+                    Name = "IQuery",
+                    Path = $"{folderPath}\\{folderName}.Application\\Contracts\\RepositoryManager\\Query",
+                    Type = "interface",
+                    Usings= GetEntities(folderPath,folderName),
+                    Inherits=null,
+                    Namespace=$"{folderName}.Application.Contracts.RepositoryManager.Query;",
+                    Constructor=null
+                },
+                new FileNames{
+                    Name = "ICommands",
+                    Path = $"{folderPath}\\{folderName}.Application\\Contracts\\RepositoryManager\\Command",
+                    Type = "interface",
+                    Usings= GetEntities(folderPath,folderName),
+                    Inherits=null,
+                    Namespace=$"{folderName}.Application.Contracts.RepositoryManager.Command;",
+                    Constructor=null
+                },
+                new FileNames{
+                    Name = "Query",
+                    Path = $"{folderPath}\\{folderName}.Infrastructure\\RepositoryManager\\Query",
+                    Type = "class",
+                    Usings= GetEntities(folderPath,folderName),
+                    Inherits="IQuery",
+                    Namespace=$"{folderName}.Infrastructure.RepositoryManager.Query;",
+                    Constructor=null
+                },
+                new FileNames{
+                    Name = "Commands",
+                    Path = $"{folderPath}\\{folderName}.Infrastructure\\RepositoryManager\\Command",
+                    Type = "class",
+                    Usings= GetEntities(folderPath,folderName),
+                    Inherits="ICommands",
+                    Namespace=$"{folderName}.Infrastructure.RepositoryManager.Command;",
+                    Constructor=null
+                },
+                new FileNames{
+                    Name = "DatabaseContext",
+                    Path = $"{folderPath}\\{folderName}.Infrastructure\\DatabaseManager\\Context",
+                    Type = "class",
+                    Usings= GetEntities(folderPath,folderName),
+                    Inherits="DbContext",
+                    Namespace=$"{folderName}.Infrastructure.DatabaseManager.Context;",
+                    Constructor=null
+                },
+                new FileNames{
+                    Name = "MapperConfig",
+                    Path = $"{folderPath}\\{folderName}.Application\\Configurations",
+                    Usings = GetEntities(folderPath,folderName),
+                    Type = null,
+                    Inherits = null,
+                    Namespace = $"{folderName}.Application.Configurations;",
+                    Constructor = null
+                },
+            };
+            return files;
+        }
         public static List<string> GetEntities(string folderPath,string folderName)
         {
-            DirectoryInfo d = new DirectoryInfo(@"" + $"{folderPath}\\{folderName}.Domain\\Entitites");
+            DirectoryInfo d = new DirectoryInfo($@"{folderPath}\\{folderName}.Domain\\Entitites");
             FileInfo[] Files = d.GetFiles("*.cs");
             List<string> entities = new List<string>();
 
@@ -228,7 +295,6 @@ namespace Project_generator.Utils
 
             return entities;
         }
-
         public static void WriteToFiles(string path, string content)
         {
             using (StreamWriter writetext = new StreamWriter(path))

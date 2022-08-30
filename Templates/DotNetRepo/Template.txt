@@ -6,7 +6,7 @@ namespace {{namespacetext}}
 public {{if isstatic }}static{{ end }} {{type}} {{name}} {{if inherits}}{{inherits}}{{end}}
 {
     {{~ if constructor ~}}
-    {{~ constructor ~}}
+    {{constructor}}
     {{~ end ~}}
     {{~ if name==entity~}}
     public int Id {get;set;}

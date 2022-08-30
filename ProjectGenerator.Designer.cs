@@ -728,10 +728,10 @@
             // clearLogsBtn
             // 
             this.clearLogsBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.clearLogsBtn.Location = new System.Drawing.Point(818, 394);
+            this.clearLogsBtn.Location = new System.Drawing.Point(819, 393);
             this.clearLogsBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.clearLogsBtn.Name = "clearLogsBtn";
-            this.clearLogsBtn.Size = new System.Drawing.Size(82, 22);
+            this.clearLogsBtn.Size = new System.Drawing.Size(82, 27);
             this.clearLogsBtn.TabIndex = 11;
             this.clearLogsBtn.Text = "Clear logs";
             this.clearLogsBtn.UseVisualStyleBackColor = true;
@@ -740,10 +740,10 @@
             // fileGenerator
             // 
             this.fileGenerator.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.fileGenerator.Location = new System.Drawing.Point(26, 394);
+            this.fileGenerator.Location = new System.Drawing.Point(23, 389);
             this.fileGenerator.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.fileGenerator.Name = "fileGenerator";
-            this.fileGenerator.Size = new System.Drawing.Size(118, 22);
+            this.fileGenerator.Size = new System.Drawing.Size(118, 31);
             this.fileGenerator.TabIndex = 12;
             this.fileGenerator.Text = "File generator";
             this.fileGenerator.UseVisualStyleBackColor = true;
