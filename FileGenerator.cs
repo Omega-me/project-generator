@@ -24,10 +24,10 @@ namespace Project_generator
             selectSlnPathDialog.FilterIndex = 1;
             selectSlnPathDialog.Multiselect = false;
             // Get the templates path
-            templatePath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName}\\Templates";
-            logsField.Text= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            // https://stackoverflow.com/questions/15653921/get-current-folder-path
-            // Add a template for base mapper initilization for the entity 
+            // development path
+            //templatePath = $@"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName}\Templates";
+            //production path
+            templatePath= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Templates";
         }
 
         #region .NET

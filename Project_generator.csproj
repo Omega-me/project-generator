@@ -13,6 +13,7 @@
     <None Remove="Templates\DotNetRepo\cqrs.txt" />
     <None Remove="Templates\DotNetRepo\DbContext.txt" />
     <None Remove="Templates\DotNetRepo\Manager.txt" />
+    <None Remove="Templates\DotNetRepo\Mapper.txt" />
     <None Remove="Templates\DotNetRepo\ModelState.txt" />
     <None Remove="Templates\DotNetRepo\Template.txt" />
   </ItemGroup>
@@ -28,6 +29,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\DotNetRepo\Manager.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\DotNetRepo\Mapper.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\DotNetRepo\ModelState.txt">
