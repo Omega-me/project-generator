@@ -8,7 +8,8 @@ namespace Project_generator
 {
     public partial class projectGenerator : Form
     {
-        Loading loading = new Loading();
+        Loading loadingForm = new Loading();
+        FileGenerator fileGeneratorForm = new FileGenerator();
         public projectGenerator()   
         {
             InitializeComponent();
@@ -69,7 +70,7 @@ namespace Project_generator
                     MessageBox.Show($@"This directory {pathField.Text}\{nameField.Text} exists, please use different name for your project or delete the directory first", "Directory conflict");
                     return;
                 }
-                loading.Show();
+                loadingForm.Show();
                     var result = await Cli.Wrap("npx")
                     .WithArguments(new[] { "create-react-app", nameField.Text, "--template", "omegame" })
                     .WithWorkingDirectory(pathField.Text)
@@ -77,7 +78,7 @@ namespace Project_generator
                 await Cli.Wrap("powershell").WithArguments("code .").WithWorkingDirectory($@"{pathField.Text}\{nameField.Text}").ExecuteAsync();
                 terminalField.Text = result.StandardOutput;
                 showLogsRadio.Checked = true;
-                loading.Hide();
+                loadingForm.Hide();
                 return;
             }
             if (reactMicroFrontendArchitectureRadio.Checked)
@@ -87,7 +88,7 @@ namespace Project_generator
                     MessageBox.Show($@"This directory {pathField.Text}\{nameField.Text} exists, please use different name for your project or delete the directory first", "Directory conflict");
                     return;
                 }
-                loading.Show();
+                loadingForm.Show();
                 var result = await Cli.Wrap("npx")
                 .WithArguments(new[] { "create-react-app", nameField.Text, "--template", "omegamemicro" })
                 .WithWorkingDirectory(pathField.Text)
@@ -95,7 +96,7 @@ namespace Project_generator
                 await Cli.Wrap("powershell").WithArguments("code .").WithWorkingDirectory($@"{pathField.Text}\{nameField.Text}").ExecuteAsync();
                 terminalField.Text = result.StandardOutput;
                 showLogsRadio.Checked = true;
-                loading.Hide();
+                loadingForm.Hide();
                 return;
             }
         }
@@ -307,8 +308,11 @@ namespace Project_generator
         }
         private void fileGenerator_Click(object sender, EventArgs e)
         {
-           var fileGenerator =new FileGenerator();
-            fileGenerator.Show();
+            if (fileGeneratorForm.Visible)
+            {
+                fileGeneratorForm.Hide();
+            }
+            fileGeneratorForm.Show();
         }
         private void Generate(string projectType,string path,string name, List<string> commands)
         {
@@ -404,7 +408,5 @@ namespace Project_generator
             }
         }
         #endregion
-
-       
     }
 }

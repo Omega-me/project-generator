@@ -49,6 +49,7 @@
             this.dotnetRepoSolutionSetPathBtn = new System.Windows.Forms.Button();
             this.dotnetRepoSolutionPathField = new System.Windows.Forms.TextBox();
             this.dotnetRepoSolutionPathLabel = new System.Windows.Forms.Label();
+            this.migrations = new System.Windows.Forms.TabPage();
             this.logsPage = new System.Windows.Forms.TabPage();
             this.logsField = new System.Windows.Forms.TextBox();
             this.selectSlnPathDialog = new System.Windows.Forms.OpenFileDialog();
@@ -88,6 +89,7 @@
             // 
             // frontendContainer
             // 
+            this.frontendContainer.Appearance = System.Windows.Forms.TabAppearance.Buttons;
             this.frontendContainer.Controls.Add(this.reactPage);
             this.frontendContainer.Controls.Add(this.nextPage);
             this.frontendContainer.Location = new System.Drawing.Point(5, 4);
@@ -100,22 +102,22 @@
             // 
             // reactPage
             // 
-            this.reactPage.Location = new System.Drawing.Point(4, 24);
+            this.reactPage.Location = new System.Drawing.Point(4, 27);
             this.reactPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.reactPage.Name = "reactPage";
             this.reactPage.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.reactPage.Size = new System.Drawing.Size(891, 332);
+            this.reactPage.Size = new System.Drawing.Size(891, 329);
             this.reactPage.TabIndex = 0;
             this.reactPage.Text = "React js";
             this.reactPage.UseVisualStyleBackColor = true;
             // 
             // nextPage
             // 
-            this.nextPage.Location = new System.Drawing.Point(4, 24);
+            this.nextPage.Location = new System.Drawing.Point(4, 27);
             this.nextPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.nextPage.Name = "nextPage";
             this.nextPage.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.nextPage.Size = new System.Drawing.Size(891, 332);
+            this.nextPage.Size = new System.Drawing.Size(891, 329);
             this.nextPage.TabIndex = 1;
             this.nextPage.Text = "Next js";
             this.nextPage.UseVisualStyleBackColor = true;
@@ -134,8 +136,10 @@
             // 
             // backendContainer
             // 
+            this.backendContainer.Appearance = System.Windows.Forms.TabAppearance.Buttons;
             this.backendContainer.Controls.Add(this.nodejsPage);
             this.backendContainer.Controls.Add(this.dotnetPage);
+            this.backendContainer.Controls.Add(this.migrations);
             this.backendContainer.Location = new System.Drawing.Point(5, 2);
             this.backendContainer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.backendContainer.Name = "backendContainer";
@@ -145,11 +149,11 @@
             // 
             // nodejsPage
             // 
-            this.nodejsPage.Location = new System.Drawing.Point(4, 24);
+            this.nodejsPage.Location = new System.Drawing.Point(4, 27);
             this.nodejsPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.nodejsPage.Name = "nodejsPage";
             this.nodejsPage.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.nodejsPage.Size = new System.Drawing.Size(891, 334);
+            this.nodejsPage.Size = new System.Drawing.Size(891, 331);
             this.nodejsPage.TabIndex = 0;
             this.nodejsPage.Text = "Node js";
             this.nodejsPage.UseVisualStyleBackColor = true;
@@ -158,11 +162,11 @@
             // 
             this.dotnetPage.Controls.Add(this.mediatorGroup);
             this.dotnetPage.Controls.Add(this.repositoryGroup);
-            this.dotnetPage.Location = new System.Drawing.Point(4, 24);
+            this.dotnetPage.Location = new System.Drawing.Point(4, 27);
             this.dotnetPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dotnetPage.Name = "dotnetPage";
             this.dotnetPage.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.dotnetPage.Size = new System.Drawing.Size(891, 334);
+            this.dotnetPage.Size = new System.Drawing.Size(891, 331);
             this.dotnetPage.TabIndex = 1;
             this.dotnetPage.Text = ".Net ";
             this.dotnetPage.UseVisualStyleBackColor = true;
@@ -308,6 +312,16 @@
             this.dotnetRepoSolutionPathLabel.TabIndex = 0;
             this.dotnetRepoSolutionPathLabel.Text = "Path to the solution file";
             // 
+            // migrations
+            // 
+            this.migrations.Location = new System.Drawing.Point(4, 27);
+            this.migrations.Name = "migrations";
+            this.migrations.Padding = new System.Windows.Forms.Padding(3);
+            this.migrations.Size = new System.Drawing.Size(891, 331);
+            this.migrations.TabIndex = 2;
+            this.migrations.Text = "Database migrations";
+            this.migrations.UseVisualStyleBackColor = true;
+            // 
             // logsPage
             // 
             this.logsPage.Controls.Add(this.logsField);
@@ -341,6 +355,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FileGenerator";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FileGenerator";
             this.Load += new System.EventHandler(this.FileGenerator_Load);
             this.fileGenContainer.ResumeLayout(false);
@@ -383,5 +398,6 @@
         private CheckBox dotnetRepoShowInstructionCheckbox;
         private OpenFileDialog selectSlnPathDialog;
         private Button RepoRemoveLastBtn;
+        private TabPage migrations;
     }
 }

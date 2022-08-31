@@ -28,6 +28,8 @@ namespace Project_generator
             //templatePath = $@"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName}\Templates";
             //production path
             templatePath= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Templates";
+            // migration tool
+            //dotnet - ef migrations add initial_migration - p Hotel_listing.Infrastructure - s Hotel_listing.Presantattion
         }
 
         #region .NET

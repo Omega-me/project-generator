@@ -766,6 +766,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "projectGenerator";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Project generator";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.onFormClosed);
             this.Load += new System.EventHandler(this.projectGenerator_Load);
