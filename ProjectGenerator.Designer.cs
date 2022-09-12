@@ -728,10 +728,10 @@
             // clearLogsBtn
             // 
             this.clearLogsBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.clearLogsBtn.Location = new System.Drawing.Point(819, 393);
+            this.clearLogsBtn.Location = new System.Drawing.Point(812, 389);
             this.clearLogsBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.clearLogsBtn.Name = "clearLogsBtn";
-            this.clearLogsBtn.Size = new System.Drawing.Size(82, 27);
+            this.clearLogsBtn.Size = new System.Drawing.Size(89, 31);
             this.clearLogsBtn.TabIndex = 11;
             this.clearLogsBtn.Text = "Clear logs";
             this.clearLogsBtn.UseVisualStyleBackColor = true;

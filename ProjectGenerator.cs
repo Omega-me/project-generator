@@ -9,7 +9,6 @@ namespace Project_generator
     public partial class projectGenerator : Form
     {
         Loading loadingForm = new Loading();
-        FileGenerator fileGeneratorForm = new FileGenerator();
         public projectGenerator()   
         {
             InitializeComponent();
@@ -71,7 +70,7 @@ namespace Project_generator
                     return;
                 }
                 loadingForm.Show();
-                    var result = await Cli.Wrap("npx")
+                var result = await Cli.Wrap("npx")
                     .WithArguments(new[] { "create-react-app", nameField.Text, "--template", "omegame" })
                     .WithWorkingDirectory(pathField.Text)
                     .ExecuteBufferedAsync();
@@ -308,10 +307,7 @@ namespace Project_generator
         }
         private void fileGenerator_Click(object sender, EventArgs e)
         {
-            if (fileGeneratorForm.Visible)
-            {
-                fileGeneratorForm.Hide();
-            }
+            FileGenerator fileGeneratorForm = new FileGenerator();
             fileGeneratorForm.Show();
         }
         private void Generate(string projectType,string path,string name, List<string> commands)
