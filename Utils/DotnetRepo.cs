@@ -10,17 +10,17 @@ namespace Project_generator.Utils
             List<FileNames> files = new List<FileNames>
             {
                 new FileNames{
-                    Name = repoDomainNameField,
-                    Path = $"{folderPath}\\{folderName}.Domain\\Entitites",
+                    Name = repoDomainNameField, //Doamin
+                    Path = @$"{folderPath}\{folderName}.Domain\Entitites",
                     Type = "class",
                     Usings=new List<string>(),
-                    Inherits=null,
+                    Inherits= ": BaseEntity",
                     Namespace=$"{folderName}.Domain.Entitites;",
                     Constructor=null
                 },
                 new FileNames{
-                    Name = $"I{repoDomainNameField}Query",
-                    Path = $"{folderPath}\\{folderName}.Application\\Contracts\\RepositoryManager\\Query",
+                    Name = $"I{repoDomainNameField}Query", //IDomainQuery
+                    Path = @$"{folderPath}\{folderName}.Application\Contracts\RepositoryManager\Query",
                     Usings=new List<string>{
                         $"using {folderName}.Domain.Entitites;",
                     },
@@ -30,8 +30,8 @@ namespace Project_generator.Utils
                     Constructor=null
                 },
                 new FileNames{
-                    Name = $"I{repoDomainNameField}Command",
-                    Path = $"{folderPath}\\{folderName}.Application\\Contracts\\RepositoryManager\\Command",
+                    Name = $"I{repoDomainNameField}Command", //IDomainCommand
+                    Path = @$"{folderPath}\{folderName}.Application\Contracts\RepositoryManager\Command",
                     Usings=new List<string>{
                         $"using {folderName}.Domain.Entitites;",
                     },
@@ -41,12 +41,12 @@ namespace Project_generator.Utils
                     Constructor=null
                 },
                 new FileNames{
-                    Name = $"{repoDomainNameField}Query",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\RepositoryManager\\Query",
+                    Name = $"{repoDomainNameField}Query", //DomainQuery
+                    Path = @$"{folderPath}\{folderName}.Infrastructure\RepositoryManager\Query",
                     Usings=new List<string>{
                         $"using {folderName}.Application.Contracts.RepositoryManager.Query;",
                         $"using {folderName}.Domain.Entitites;",
-                        $"using {folderName}.Infrastructure.DatabaseManager.Context;"
+                        $"using {folderName}.Persistence;"
                     },
                     Type = "class",
                     Inherits=$": BaseQuery<{repoDomainNameField}>, I{repoDomainNameField}Query",
@@ -55,12 +55,12 @@ namespace Project_generator.Utils
                                  "{ }"
                 },
                 new FileNames{
-                    Name = $"{repoDomainNameField}Command",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\RepositoryManager\\Command",
+                    Name = $"{repoDomainNameField}Command", //DomainCommand
+                    Path = @$"{folderPath}\{folderName}.Infrastructure\RepositoryManager\Command",
                     Usings=new List<string>{
                         $"using {folderName}.Application.Contracts.RepositoryManager.Command;",
                         $"using {folderName}.Domain.Entitites;",
-                        $"using {folderName}.Infrastructure.DatabaseManager.Context;"
+                        $"using {folderName}.Persistence;"
                     },
                     Type = "class",
                     Inherits=$": BaseCommand<{repoDomainNameField}>, I{repoDomainNameField}Command",
@@ -69,8 +69,8 @@ namespace Project_generator.Utils
                                  "{ }"
                 },
                 new FileNames{
-                    Name = "IQuery",
-                    Path = $"{folderPath}\\{folderName}.Application\\Contracts\\RepositoryManager\\Query",
+                    Name = "IQuery", //IQuery
+                    Path = @$"{folderPath}\{folderName}.Application\Contracts\RepositoryManager\Query",
                     Type = "interface",
                     Usings= GetEntities(folderPath,folderName),
                     Inherits=null,
@@ -78,8 +78,8 @@ namespace Project_generator.Utils
                     Constructor=null
                 },
                 new FileNames{
-                    Name = "ICommands",
-                    Path = $"{folderPath}\\{folderName}.Application\\Contracts\\RepositoryManager\\Command",
+                    Name = "ICommands", //ICommands
+                    Path = @$"{folderPath}\{folderName}.Application\Contracts\RepositoryManager\Command",
                     Type = "interface",
                     Usings= GetEntities(folderPath,folderName),
                     Inherits=null,
@@ -87,8 +87,8 @@ namespace Project_generator.Utils
                     Constructor=null
                 },
                 new FileNames{
-                    Name = "Query",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\RepositoryManager\\Query",
+                    Name = "Query", //Query
+                    Path = @$"{folderPath}\{folderName}.Infrastructure\RepositoryManager\Query",
                     Type = "class",
                     Usings= GetEntities(folderPath,folderName),
                     Inherits="IQuery",
@@ -96,8 +96,8 @@ namespace Project_generator.Utils
                     Constructor=null
                 },
                 new FileNames{
-                    Name = "Commands",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\RepositoryManager\\Command",
+                    Name = "Commands", //Commands
+                    Path = @$"{folderPath}\{folderName}.Infrastructure\RepositoryManager\Command",
                     Type = "class",
                     Usings= GetEntities(folderPath,folderName),
                     Inherits="ICommands",
@@ -105,17 +105,17 @@ namespace Project_generator.Utils
                     Constructor=null
                 },
                 new FileNames{
-                    Name = "DatabaseContext",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\DatabaseManager\\Context",
+                    Name = "DatabaseContext", //DatabaseContext
+                    Path = @$"{folderPath}\{folderName}.Persistence",
                     Type = "class",
                     Usings= GetEntities(folderPath,folderName),
                     Inherits="DbContext",
-                    Namespace=$"{folderName}.Infrastructure.DatabaseManager.Context;",
+                    Namespace=$"{folderName}.Persistence;",
                     Constructor=null
                 },
                 new FileNames{
-                    Name = $"{repoDomainNameField}Configuration",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\DatabaseManager\\Configurations\\Entities",
+                    Name = $"{repoDomainNameField}Configuration", //DomainConfiguration
+                    Path = @$"{folderPath}\{folderName}.Persistence\Configurations\Entities",
                     Usings=new List<string>{
                         $"using {folderName}.Domain.Entitites;",
                         "using Microsoft.EntityFrameworkCore;",
@@ -123,16 +123,17 @@ namespace Project_generator.Utils
                     },
                     Type = "class",
                     Inherits=$": IEntityTypeConfiguration<{repoDomainNameField}>",
-                    Namespace=$"{folderName}.Infrastructure.DatabaseManager.Configurations.Entities;",
+                    Namespace=$"{folderName}.Persistence.Configurations.Entities;",
                     Constructor=$"public void Configure(EntityTypeBuilder<{repoDomainNameField}> builder)" + "{}"
                 },
                 new FileNames{
-                    Name = $"{repoDomainNameField}Manager",
-                    Path = $"{folderPath}\\{folderName}.Presantation\\Managers",
+                    Name = $"{repoDomainNameField}Manager", //DoaminManager
+                    Path = @$"{folderPath}\{folderName}.API\Managers",
                     Type = "class",
                     Usings=new List<string>{
                         "using AutoMapper;",
-                        $"using {folderName}.Application.Configurations.Response;",
+                        $"using {folderName}.Application.Common.RepositoryOptions;",
+                        $"using {folderName}.Application.Common.Response;",
                         $"using {folderName}.Application.Contracts.RepositoryManager.Command;",
                         $"using {folderName}.Application.Contracts.RepositoryManager.Query;",
                         $"using {folderName}.Domain.Entitites;",
@@ -140,36 +141,38 @@ namespace Project_generator.Utils
                     },
                     IsStatic=true,
                     Inherits=null,
-                    Namespace=$"{folderName}.Presantation.Managers;",
+                    Namespace=$"{folderName}.API.Managers;",
                     Constructor=null
                 },
                 new FileNames{
-                    Name = $"{repoDomainNameField}Controller",
-                    Path = $"{folderPath}\\{folderName}.Presantation\\Controllers",
+                    Name = $"{repoDomainNameField}Controller", //DomainController
+                    Path = @$"{folderPath}\{folderName}.API\Controllers",
                     Type = "class",
                     Usings=new List<string>{
-                        "using AutoMapper;",
                         "using Microsoft.AspNetCore.JsonPatch;",
                         "using Microsoft.AspNetCore.Mvc;",
+                        "using Swashbuckle.AspNetCore.Annotations;",
+                        "using AutoMapper;",
+                        $"using {folderName}.API.Common;",
+                        $"using {folderName}.API.Managers;",
+                        $"using {folderName}.Application.Common.RepositoryOptions;",
+                        $"using {folderName}.Application.Common.Response;",
                         $"using {folderName}.Application.Contracts.RepositoryManager.Command;",
                         $"using {folderName}.Application.Contracts.RepositoryManager.Query;",
-                        $"using {folderName}.Application.DTO.Country;",
                         $"using {folderName}.Application.Exceptions.ValidationResponseFilters;",
                         $"using {folderName}.Domain.Entitites;",
-                        $"using {folderName}.Presantation.Managers;",
-                        "using Microsoft.AspNetCore.JsonPatch;",
                     },
                     Inherits=$": BaseController<{repoDomainNameField}>",
-                    Namespace=$"{folderName}.Presantation.Controllers;",
+                    Namespace=$"{folderName}.API.Controllers;",
                     Constructor=null
                 },
                 new FileNames{
-                    Name = "MapperConfig",
-                    Path = $"{folderPath}\\{folderName}.Application\\Configurations",
+                    Name = "MapperConfig", //MapperConfig
+                    Path = @$"{folderPath}\{folderName}.Application\Common",
                     Usings = GetEntities(folderPath,folderName),
                     Type = null,
                     Inherits = null,
-                    Namespace = $"{folderName}.Application.Configurations;",
+                    Namespace = $"{folderName}.Application.Common;",
                     Constructor = null
                 },
             };
@@ -178,11 +181,12 @@ namespace Project_generator.Utils
                 files.Add(
                     new FileNames
                     {
-                        Name = $"{repoDomainNameField}ModelStateFilter",
-                        Path = $"{folderPath}\\{folderName}.Application\\Exceptions\\ValidationResponseFilters",
+                        Name = $"{repoDomainNameField}ModelStateFilter", //DomainModelStateFilter
+                        Path = @$"{folderPath}\{folderName}.Application\Exceptions\ValidationResponseFilters",
                         Type = "class",
                         Usings = new List<string> {
-                            $"using {folderName}.Application.Configurations.Response;",
+                            $"using {folderName}.Application.Common.Response;",
+                            $"using {folderName}.Application.Domain.Entitites;",
                             "using Microsoft.AspNetCore.Http;",
                             "using Microsoft.AspNetCore.Mvc;",
                             "using Microsoft.AspNetCore.Mvc.Filters;"
@@ -195,11 +199,11 @@ namespace Project_generator.Utils
                 files.Add(
                     new FileNames
                     {
-                        Name = $"I{repoDomainNameField}Response",
-                        Path = $"{folderPath}\\{folderName}.Application\\Contracts\\Response",
+                        Name = $"I{repoDomainNameField}Response<TData>",//IDomainResponse
+                        Path = @$"{folderPath}\{folderName}.Application\Contracts\Response",
                         Type = "interface",
                         Usings = new List<string>(),
-                        Inherits = $": IBaseResponse<object,object>",
+                        Inherits = $": IBaseResponse<TData,List<BaseError>>",
                         Namespace = $"{folderName}.Application.Contracts.Response;",
                         Constructor = null
                     }
@@ -207,14 +211,14 @@ namespace Project_generator.Utils
                 files.Add(
                      new FileNames
                      {
-                         Name = $"{repoDomainNameField}Response",
-                         Path = $"{folderPath}\\{folderName}.Application\\Configurations\\Response",
+                         Name = $"{repoDomainNameField}Response<TData>", //DomainResponse
+                         Path = @$"{folderPath}\{folderName}.Application\Common\Response",
                          Type = "class",
                          Usings = new List<string> {
                             $"using {folderName}.Application.Contracts.Response;",
                          },
-                         Inherits = $": BaseResponse<object, object>, I{repoDomainNameField}Response",
-                         Namespace = $"{folderName}.Application.Configurations.Response;",
+                         Inherits = $": BaseResponse<TData,List<BaseError>>, I{repoDomainNameField}Response<TData>",
+                         Namespace = $"{folderName}.Application.Common.Response;",
                          Constructor = null
                      }
                 );
@@ -227,7 +231,7 @@ namespace Project_generator.Utils
             {
                 new FileNames{
                     Name = "IQuery",
-                    Path = $"{folderPath}\\{folderName}.Application\\Contracts\\RepositoryManager\\Query",
+                    Path = @$"{folderPath}\{folderName}.Application\Contracts\RepositoryManager\Query",
                     Type = "interface",
                     Usings= GetEntities(folderPath,folderName),
                     Inherits=null,
@@ -236,7 +240,7 @@ namespace Project_generator.Utils
                 },
                 new FileNames{
                     Name = "ICommands",
-                    Path = $"{folderPath}\\{folderName}.Application\\Contracts\\RepositoryManager\\Command",
+                    Path = @$"{folderPath}\{folderName}.Application\Contracts\RepositoryManager\Command",
                     Type = "interface",
                     Usings= GetEntities(folderPath,folderName),
                     Inherits=null,
@@ -245,7 +249,7 @@ namespace Project_generator.Utils
                 },
                 new FileNames{
                     Name = "Query",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\RepositoryManager\\Query",
+                    Path = @$"{folderPath}\{folderName}.Infrastructure\RepositoryManager\Query",
                     Type = "class",
                     Usings= GetEntities(folderPath,folderName),
                     Inherits="IQuery",
@@ -254,7 +258,7 @@ namespace Project_generator.Utils
                 },
                 new FileNames{
                     Name = "Commands",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\RepositoryManager\\Command",
+                    Path = @$"{folderPath}\{folderName}.Infrastructure\RepositoryManager\Command",
                     Type = "class",
                     Usings= GetEntities(folderPath,folderName),
                     Inherits="ICommands",
@@ -263,20 +267,20 @@ namespace Project_generator.Utils
                 },
                 new FileNames{
                     Name = "DatabaseContext",
-                    Path = $"{folderPath}\\{folderName}.Infrastructure\\DatabaseManager\\Context",
+                    Path = @$"{folderPath}\{folderName}.Persistence",
                     Type = "class",
                     Usings= GetEntities(folderPath,folderName),
                     Inherits="DbContext",
-                    Namespace=$"{folderName}.Infrastructure.DatabaseManager.Context;",
+                    Namespace=$"{folderName}.Persistence;",
                     Constructor=null
                 },
                 new FileNames{
                     Name = "MapperConfig",
-                    Path = $"{folderPath}\\{folderName}.Application\\Configurations",
+                    Path = @$"{folderPath}\{folderName}.Application\Common",
                     Usings = GetEntities(folderPath,folderName),
                     Type = null,
                     Inherits = null,
-                    Namespace = $"{folderName}.Application.Configurations;",
+                    Namespace = $"{folderName}.Application.Common;",
                     Constructor = null
                 },
             };
@@ -284,13 +288,13 @@ namespace Project_generator.Utils
         }
         public static List<string> GetEntities(string folderPath,string folderName)
         {
-            DirectoryInfo d = new DirectoryInfo($@"{folderPath}\\{folderName}.Domain\\Entitites");
+            DirectoryInfo d = new DirectoryInfo($@"{folderPath}\{folderName}.Domain\Entitites");
             FileInfo[] Files = d.GetFiles("*.cs");
             List<string> entities = new List<string>();
 
-            foreach (FileInfo file2 in Files)
+            foreach (FileInfo file in Files)
             {
-                entities.Add(file2.Name.Split(".")[0]);
+                entities.Add(file.Name.Split(".")[0]);
             }
 
             return entities;

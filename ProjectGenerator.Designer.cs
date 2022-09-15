@@ -85,6 +85,7 @@
             this.showLogsRadio = new System.Windows.Forms.RadioButton();
             this.clearLogsBtn = new System.Windows.Forms.Button();
             this.fileGenerator = new System.Windows.Forms.Button();
+            this.useAuthDotnetCheckbox = new System.Windows.Forms.CheckBox();
             this.reactGeneratorGroup.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.nodejsGeneratorGroup.SuspendLayout();
@@ -582,6 +583,7 @@
             // 
             // dotnetGeneratorGroup
             // 
+            this.dotnetGeneratorGroup.Controls.Add(this.useAuthDotnetCheckbox);
             this.dotnetGeneratorGroup.Controls.Add(this.cqrsMediatrRadio);
             this.dotnetGeneratorGroup.Controls.Add(this.cqerRepoRadio);
             this.dotnetGeneratorGroup.Controls.Add(this.dotnetGenerateBtn);
@@ -749,6 +751,18 @@
             this.fileGenerator.UseVisualStyleBackColor = true;
             this.fileGenerator.Click += new System.EventHandler(this.fileGenerator_Click);
             // 
+            // useAuthDotnetCheckbox
+            // 
+            this.useAuthDotnetCheckbox.AutoSize = true;
+            this.useAuthDotnetCheckbox.Checked = true;
+            this.useAuthDotnetCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.useAuthDotnetCheckbox.Location = new System.Drawing.Point(16, 98);
+            this.useAuthDotnetCheckbox.Name = "useAuthDotnetCheckbox";
+            this.useAuthDotnetCheckbox.Size = new System.Drawing.Size(154, 19);
+            this.useAuthDotnetCheckbox.TabIndex = 9;
+            this.useAuthDotnetCheckbox.Text = "Use Authentication (jwt)";
+            this.useAuthDotnetCheckbox.UseVisualStyleBackColor = true;
+            // 
             // projectGenerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -844,5 +858,6 @@
         private CheckBox nodejsTypescriptCheck;
         private Button clearLogsBtn;
         private Button fileGenerator;
+        private CheckBox useAuthDotnetCheckbox;
     }
 }

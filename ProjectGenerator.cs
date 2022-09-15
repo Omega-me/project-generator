@@ -243,6 +243,7 @@ namespace Project_generator
             dotnetNameField.Text = null;
             cqerRepoRadio.Checked = false;
             cqrsMediatrRadio.Checked = false;
+            useAuthDotnetCheckbox.Checked = true;
         }
 
         private void dotnetGenerateBtn_Click(object sender, EventArgs e)
