@@ -25,9 +25,9 @@ namespace Project_generator
             selectSlnPathDialog.Multiselect = false;
             // Get the templates path
             // development path
-            //templatePath = $@"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName}\Templates";
+            templatePath = $@"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName}\Templates";
             //production path
-            templatePath= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Templates";
+            //templatePath= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Templates";
             // migration tool
             //dotnet - ef migrations add initial_migration - p Hotel_listing.Infrastructure - s Hotel_listing.Presantattion
         }

@@ -199,7 +199,7 @@ namespace Project_generator.Utils
                 files.Add(
                     new FileNames
                     {
-                        Name = $"I{repoDomainNameField}Response<TData>",//IDomainResponse
+                        Name = $"I{repoDomainNameField}Response",//IDomainResponse
                         Path = @$"{folderPath}\{folderName}.Application\Contracts\Response",
                         Type = "interface",
                         Usings = new List<string>(),
