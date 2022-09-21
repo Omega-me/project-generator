@@ -1,8 +1,5 @@
 ﻿using Project_generator.Utils;
 using Scriban;
-using System.Collections;
-using System.Diagnostics;
-using System.Reflection;
 
 namespace Project_generator
 {
@@ -29,7 +26,7 @@ namespace Project_generator
             //production path
             //templatePath= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Templates";
             // migration tool
-            //dotnet - ef migrations add initial_migration - p Hotel_listing.Infrastructure - s Hotel_listing.Presantattion
+            //dotnet - ef migrations add initial_migration - p Hotel_listing.Persistence - s Hotel_listing.API
         }
 
         #region .NET
@@ -68,7 +65,7 @@ namespace Project_generator
             }
 
             string entityPath;
-            string entityDir = $@"{folderPath}\\{folderName}.Domain\\Entitites";
+            string entityDir = $@"{folderPath}\{folderName}.Domain\Entitites";
             string entityFilename = repoDomainNameField.Text;
             entityPath = Path.Combine(entityDir, entityFilename);
             entityPath = Path.ChangeExtension(entityPath, "cs");

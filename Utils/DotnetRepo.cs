@@ -106,11 +106,11 @@ namespace Project_generator.Utils
                 },
                 new FileNames{
                     Name = "DatabaseContext", //DatabaseContext
-                    Path = @$"{folderPath}\{folderName}.Persistence",
+                    Path = @$"{folderPath}\{folderName}.Persistence\Contexts",
                     Type = "class",
                     Usings= GetEntities(folderPath,folderName),
                     Inherits="DbContext",
-                    Namespace=$"{folderName}.Persistence;",
+                    Namespace=$"{folderName}.Persistence.Contexts;",
                     Constructor=null
                 },
                 new FileNames{
